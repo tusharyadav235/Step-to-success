@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    container_name: steptosuccess-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:root}
+      MYSQL_DATABASE: steptosuccess
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: steptosuccess-backend
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - DB_USER=${DB_USER:root}
+      - DB_PASSWORD=${DB_PASSWORD:root}
+      - SPRING_PROFILES_ACTIVE=prod
+      - APP_BASE_URL=http://${EC2_HOST:localhost}:8081
+    depends_on:
+      - db
+    volumes:
+      - backend_uploads:/app/uploads
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: steptosuccess-frontend
+    restart: always
+    ports:
+      - "80:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://${EC2_HOST:localhost}:8081
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
+  backend_uploads:
