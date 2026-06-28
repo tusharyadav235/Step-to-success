@@ -24,6 +24,8 @@ services:
     environment:
       DB_USER: root
       DB_PASSWORD: ${DB_PASSWORD}
+      # IMPORTANT: Ensure your application connects to 'db'
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/steptosuccess?useSSL=false&serverTimezone=UTC
       SPRING_PROFILES_ACTIVE: prod
       APP_BASE_URL: http://${EC2_HOST}:8081
     depends_on:
