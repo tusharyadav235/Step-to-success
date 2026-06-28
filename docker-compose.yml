@@ -16,7 +16,7 @@ services:
       - app-network
 
   backend:
-    image: yourdockerhubusername/steptosuccess-backend:latest
+    image: ${DOCKERHUB_USERNAME}/steptosuccess-backend:latest
     container_name: steptosuccess-backend
     restart: always
     ports:
@@ -34,7 +34,7 @@ services:
       - app-network
 
   frontend:
-    image: yourdockerhubusername/steptosuccess-frontend:latest
+    image: ${DOCKERHUB_USERNAME}/steptosuccess-frontend:latest
     container_name: steptosuccess-frontend
     restart: always
     ports:
