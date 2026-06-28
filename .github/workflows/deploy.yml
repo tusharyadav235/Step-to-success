@@ -70,7 +70,7 @@ jobs:
 
             echo "Connected to EC2"
 
-            cd ~/Step-to-success
+            cd ~/deploy
 
             export DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
             export EC2_HOST="${{ secrets.EC2_HOST }}"
